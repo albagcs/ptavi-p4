@@ -3,7 +3,7 @@
 
 import socket
 import sys
-""" Cliente que se registtra en el servidor """
+""" Cliente que se registra en el servidor """
 try:
     SERVER = sys.argv[1]
     PORT = int(sys.argv[2])
@@ -32,3 +32,5 @@ try:
     print "Fin."
 except IndexError:
     print "Usage: client.py ip puerto register sip_address expires_value"
+except ValueError:
+    print "expires_value must be an integer"
