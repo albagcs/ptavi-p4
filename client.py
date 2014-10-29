@@ -8,12 +8,21 @@ import socket
 import sys
 
 # Cliente UDP simple.
-
-# Dirección IP del servidor.
-SERVER = sys.argv[1]
-PORT = int(sys.argv[2])
+#Excepciones
+try:
+    # Dirección IP del servidor.
+    SERVER = sys.argv[1]
+    PORT = int(sys.argv[2])
+    # Si quieres METHOD= sys.argv[3]
+    EXPIRES = int(sys.argv[5])
+except IndexError:
+    sys.exyt(Usage: client.py ip puerto register sip_address expires_value)
+except ValueError:
+    sys.exit(Usage: client.py ip puerto register sip_address expires_value)
 
 # Contenido que vamos a enviar
+#En tu línea no tienes que enviar el puerto y la dirección IP,
+# con sería 4 porque tienes que añadir el Expires
 con = 3
 linea = ""
 while con < len(sys.argv):
