@@ -28,10 +28,10 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
                        "\t" + hora + "\r\n")
         #Escribimos el diccionario en el fichero
         fichero.write(cadena)
+        fichero.close()
 
     def handle(self):
         """ Registra y borra clientes del server"""
-        self.wfile.write("Hemos recibido tu peticion")
         while 1:
             # Leemos las lineas del fichero
             line = self.rfile.read()
@@ -45,18 +45,18 @@ class SIPRegisterHandler(SocketServer.DatagramRequestHandler):
             # Añadimos una entrada al diccionario
             self.clientes[direccion[1]] = (self.client_address[0], horalim)
             vsip = palabras[2]
-            print vsip + " 200 OK \r\n\r\n"
             # Borramos si expires = 0 o el registro ha caducado
             if expires == "0":
                 del self.clientes[(direccion[1])]
             for cliente in self.clientes.keys():
                 if self.clientes[cliente][1] < time.time():
                     del self.clientes[cliente]
+            self.wfile.write(vsip + " 200 OK \r\n\r\n")
             self.register2file()
 
 if __name__ == "__main__":
     """ Creamos servidor SIP y escuchamos"""
-    puerto = int(sys.argv[1])
-    serv = SocketServer.UDPServer(("", puerto), SIPRegisterHandler)
+    PUERTO = int(sys.argv[1])
+    serv = SocketServer.UDPServer(("", PUERTO), SIPRegisterHandler)
     print "Lanzando servidor register..."
     serv.serve_forever()
